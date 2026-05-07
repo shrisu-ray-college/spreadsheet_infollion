@@ -24,6 +24,6 @@ dist-ssr
 *.sw?
 
 # Extras
-src/assets*
+src/assets
 github_url.txt
 vercel_url.txt
