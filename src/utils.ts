@@ -58,6 +58,7 @@ export function computeGrid(data: RawData): ComputedData {
     }
 
     const text = raw.trim();
+    const formula = text.slice(1);
     if (!text.startsWith('=')) {
       if (!isNaN(Number(text))) {
         const val = Number(text);
@@ -70,7 +71,7 @@ export function computeGrid(data: RawData): ComputedData {
       return text;
     }
 
-    const rangeMatches = Array.from(expression.matchAll(/([A-J](?:10|[1-9])):([A-J](?:10|[1-9]))/gi));
+    const rangeMatches = Array.from(formula.matchAll(/([A-J](?:10|[1-9])):([A-J](?:10|[1-9]))/gi));
     function getNumbers(args: any[]) {
       const arr = args.map(a => (a && typeof a.toArray === 'function') ? a.toArray() : a);
       return arr.flat(Infinity).filter(v => typeof v === 'number');
@@ -97,12 +98,13 @@ export function computeGrid(data: RawData): ComputedData {
       count: (...args: any[]) => getNumbers(args).length
     };
 
-    let modifiedExpression = expression;
+    let modifiedExpression = formula;
     let hasError = false;
     let circularError = false;
 
     for (let i = 0; i < rangeMatches.length; i += 1) {
-      const [fullMatch, startCell, endCell] = rangeMatches[i];
+      const match = rangeMatches[i] as RegExpMatchArray;
+const [fullMatch, startCell, endCell] = match;
       const rangeCells = parseRange(`${startCell}:${endCell}`);
       if (!rangeCells) {
         hasError = true;
@@ -116,7 +118,7 @@ export function computeGrid(data: RawData): ComputedData {
         } else if (refVal === '#ERROR') {
           hasError = true;
         } else {
-          rangeValues.push(refVal);
+          rangeValues.push(Number(refVal));
         }
       }
       modifiedExpression = modifiedExpression.replace(fullMatch, `[${rangeValues.map(v => JSON.stringify(v)).join(',')}]`);
