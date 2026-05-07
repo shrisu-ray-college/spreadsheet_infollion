@@ -452,7 +452,7 @@ export default function Spreadsheet() {
                         onBlur={finishEditing}
                       />
                     ) : (
-                      <span className={extraClass} title={String(displayVal)}>{displayVal}</span>
+                      <span className={extraClass}>{displayVal}</span>
                     )}
                   </div>
                 );

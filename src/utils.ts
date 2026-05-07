@@ -70,7 +70,6 @@ export function computeGrid(data: RawData): ComputedData {
       return text;
     }
 
-    const expression = text.substring(1);
     const rangeMatches = Array.from(expression.matchAll(/([A-J](?:10|[1-9])):([A-J](?:10|[1-9]))/gi));
     function getNumbers(args: any[]) {
       const arr = args.map(a => (a && typeof a.toArray === 'function') ? a.toArray() : a);
