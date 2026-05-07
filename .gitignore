@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Extras
+src/assets
+github_url.txt
+vercel_url.txt
